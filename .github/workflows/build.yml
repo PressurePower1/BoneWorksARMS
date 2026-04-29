@@ -50,11 +50,11 @@ jobs:
           echo "=== libs so far ===" && ls libs/
 
       - name: Build mod
-        run: dotnet build BoneworksArms.csproj -c Release
+        run: dotnet build HexaBack.csproj -c Release
 
       - name: Upload DLL artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BoneworksArms
-          path: "bin/Release/net6.0/BoneworksArms.dll"
+          name: HexaBack
+          path: "bin/Release/net6.0/HexaBack.dll"
           if-no-files-found: error
