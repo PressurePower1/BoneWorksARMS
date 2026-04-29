@@ -33,7 +33,7 @@ jobs:
       - name: Download BoneLib from Thunderstore
         continue-on-error: true
         run: |
-          wget -q "https://thunderstore.io/package/download/gnonme/BoneLib/3.1.2/" -O bonelib.zip || echo "FAILED: BoneLib download"
+          wget -q "https://thunderstore.io/package/download/gnonme/BoneLib/3.1.4/" -O bonelib.zip || echo "FAILED: BoneLib download"
           unzip -o bonelib.zip -d bonelib_extracted/ || echo "FAILED: BoneLib unzip"
           find bonelib_extracted/ -name "*.dll" | xargs -I{} cp {} libs/ || echo "FAILED: BoneLib copy"
           echo "=== libs so far ===" && ls libs/
