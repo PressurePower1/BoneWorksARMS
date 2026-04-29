@@ -30,12 +30,12 @@
       <HintPath>libs/Il2Cppmscorlib.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="SLZ.Marrow">
-      <HintPath>libs/SLZ.Marrow.dll</HintPath>
+    <Reference Include="Il2CppSLZ.Marrow">
+      <HintPath>libs/Il2CppSLZ.Marrow.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="SLZ.VRMK">
-      <HintPath>libs/SLZ.VRMK.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>libs/0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
