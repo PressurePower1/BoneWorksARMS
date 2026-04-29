@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>HexaBack</AssemblyName>
+    <AssemblyName>HexaBackRemade</AssemblyName>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
