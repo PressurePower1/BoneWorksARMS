@@ -6,14 +6,38 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591;8618;8603</NoWarn>
+    <NoWarn>1591;8618;8603;0436</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- All dependencies pulled from NuGet — no local game install needed -->
-    <PackageReference Include="MelonLoader.Shared" Version="0.6.2" />
-    <PackageReference Include="BoneLib.GameLibs.BONELAB" Version="1.8.2" />
-    <PackageReference Include="BONELAB.GameLibs" Version="1.8.2" />
+    <Reference Include="MelonLoader">
+      <HintPath>libs/MelonLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BoneLib">
+      <HintPath>libs/BoneLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>libs/UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>libs/UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>libs/Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SLZ.Marrow">
+      <HintPath>libs/SLZ.Marrow.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SLZ.VRMK">
+      <HintPath>libs/SLZ.VRMK.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
