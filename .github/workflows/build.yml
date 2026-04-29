@@ -45,3 +45,4 @@ jobs:
           name: BoneworksArms
           path: "bin/Release/net6.0/BoneworksArms.dll"
           if-no-files-found: error
+
