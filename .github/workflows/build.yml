@@ -1,0 +1,34 @@
+name: Build BoneworksArms Mod
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore BoneworksArms.csproj
+
+      - name: Build mod
+        run: dotnet build BoneworksArms.csproj -c Release --no-restore
+
+      - name: Upload DLL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BoneworksArms
+          path: "bin/Release/net6.0/BoneworksArms.dll"
+          if-no-files-found: error
