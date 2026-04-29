@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>HexaBack</AssemblyName>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <NoWarn>1591;8618;8603;0436</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MelonLoader">
+      <HintPath>libs/MelonLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BoneLib">
+      <HintPath>libs/BoneLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>libs/UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>libs/UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>libs/Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Correct Quest IL2CPP namespace: Il2CppSLZ.Marrow (not SLZ.Marrow) -->
+    <Reference Include="Il2CppSLZ.Marrow">
+      <HintPath>libs/Il2CppSLZ.Marrow.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>libs/0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
