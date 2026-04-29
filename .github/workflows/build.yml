@@ -26,18 +26,14 @@ jobs:
           wget -q https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.x64.zip -O ml.zip
           unzip -o ml.zip -d ml_extracted/
           find ml_extracted/ -name "MelonLoader.dll" | head -1 | xargs -I{} cp {} libs/
-          echo "MelonLoader.dll:"
-          ls libs/MelonLoader.dll && echo "Found!" || echo "NOT FOUND"
+          ls libs/
 
-      - name: Download BoneLib and game stubs
+      - name: Download BoneLib source and game stubs
         run: |
-          wget -q https://github.com/SLZ-Mods/BoneLib/releases/download/v3.3.0/BoneLib.zip -O bonelib.zip
-          unzip -o bonelib.zip -d bonelib_extracted/ || true
-          find bonelib_extracted/ -name "*.dll" | xargs -I{} cp {} libs/ 2>/dev/null || true
           wget -q https://github.com/SLZ-Mods/BoneLib/archive/refs/heads/main.zip -O bonelib-src.zip
-          unzip -o bonelib-src.zip -d bonelib-src/ 2>/dev/null || true
+          unzip -o bonelib-src.zip -d bonelib-src/
           find bonelib-src/ -name "*.dll" | xargs -I{} cp {} libs/ 2>/dev/null || true
-          echo "All libs:"
+          echo "Libs found:"
           ls libs/
 
       - name: Build mod
