@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>BoneworksArms</AssemblyName>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <NoWarn>1591;8618;8603</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- All dependencies pulled from NuGet — no local game install needed -->
+    <PackageReference Include="MelonLoader.Shared" Version="0.6.2" />
+    <PackageReference Include="BoneLib.GameLibs.BONELAB" Version="1.8.2" />
+    <PackageReference Include="BONELAB.GameLibs" Version="1.8.2" />
+  </ItemGroup>
+
+</Project>
