@@ -28,9 +28,20 @@ namespace BoneworksArms
         };
 
         public override void OnInitializeMelon()
-        {
-            LoggerInstance.Msg("BoneworksArms loaded! Arm colliders will be disabled on avatar load.");
-            SetupBoneMenu();
+{
+    try
+    {
+        LoggerInstance.Msg("Pony's BW Rig loaded!");
+        Hooking.OnLevelLoaded += OnLevelLoaded;
+        SetupBoneMenu();
+        LoggerInstance.Msg("Pony's BW Rig initialized successfully!");
+    }
+    catch (System.Exception e)
+    {
+        LoggerInstance.Error("Pony's BW Rig failed to initialize: " + e.Message);
+        LoggerInstance.Error(e.StackTrace);
+    }
+}
         }
 
         private void SetupBoneMenu()
