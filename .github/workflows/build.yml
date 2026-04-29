@@ -60,5 +60,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HexaBack
-          path: "**/HexaBack.dll"
+          path: "**/HexaBackRemade.dll"
           if-no-files-found: error
