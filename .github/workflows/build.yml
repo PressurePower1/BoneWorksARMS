@@ -1,4 +1,4 @@
-name: Build HexaBackRemade Mod
+name: Build HexaBack Mod
 
 on:
   push:
@@ -24,30 +24,31 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p libs
-          wget -q https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.x64.zip -O ml.zip || echo "FAILED: MelonLoader download"
-          unzip -o ml.zip -d ml_extracted/ || echo "FAILED: MelonLoader unzip"
-          find ml_extracted/ -name "MelonLoader.dll" | head -1 | xargs -I{} cp {} libs/ || echo "FAILED: MelonLoader copy"
-          find ml_extracted/ -name "0Harmony.dll" | head -1 | xargs -I{} cp {} libs/ || true
-          echo "=== libs so far ===" && ls libs/
+          wget -q https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.x64.zip -O ml.zip
+          unzip -o ml.zip -d ml_extracted/
+          find ml_extracted/ -name "MelonLoader.dll" | head -1 | xargs -I{} cp {} libs/
+          find ml_extracted/ -name "0Harmony.dll" | head -1 | xargs -I{} cp {} libs/
+          find ml_extracted/ -name "UnityEngine.CoreModule.dll" | head -1 | xargs -I{} cp {} libs/
+          find ml_extracted/ -name "UnityEngine.PhysicsModule.dll" | head -1 | xargs -I{} cp {} libs/
+          find ml_extracted/ -name "Il2Cppmscorlib.dll" | head -1 | xargs -I{} cp {} libs/
+          find ml_extracted/ -name "Il2CppSLZ.Marrow.dll" | head -1 | xargs -I{} cp {} libs/
+          echo "=== libs after MelonLoader ===" && ls libs/
 
       - name: Download BoneLib from Thunderstore
         continue-on-error: true
         run: |
-          wget -q "https://thunderstore.io/package/download/gnonme/BoneLib/3.1.4/" -O bonelib.zip || echo "FAILED: BoneLib download"
-          unzip -o bonelib.zip -d bonelib_extracted/ || echo "FAILED: BoneLib unzip"
-          find bonelib_extracted/ -name "*.dll" | xargs -I{} cp {} libs/ || echo "FAILED: BoneLib copy"
-          echo "=== libs so far ===" && ls libs/
+          wget -q "https://thunderstore.io/package/download/gnonme/BoneLib/3.1.4/" -O bonelib.zip
+          unzip -o bonelib.zip -d bonelib_extracted/
+          find bonelib_extracted/ -name "*.dll" | xargs -I{} cp {} libs/
+          echo "=== libs after BoneLib ===" && ls libs/
 
-      - name: Download BONELAB game libs from Thunderstore modpack
+      - name: Download Fusion for game stubs
         continue-on-error: true
         run: |
-          wget -q "https://thunderstore.io/package/download/Lakatrazz/BONELAB_Fusion/1.7.0/" -O fusion.zip || echo "FAILED: Fusion download"
-          unzip -o fusion.zip -d fusion_extracted/ || echo "FAILED: Fusion unzip"
-          find fusion_extracted/ -name "Il2CppSLZ.Marrow.dll" | head -1 | xargs -I{} cp {} libs/ || echo "Il2CppSLZ.Marrow not found in Fusion"
-          find fusion_extracted/ -name "UnityEngine.CoreModule.dll" | head -1 | xargs -I{} cp {} libs/ || true
-          find fusion_extracted/ -name "UnityEngine.PhysicsModule.dll" | head -1 | xargs -I{} cp {} libs/ || true
-          find fusion_extracted/ -name "Il2Cppmscorlib.dll" | head -1 | xargs -I{} cp {} libs/ || true
-          echo "=== libs so far ===" && ls libs/
+          wget -q "https://thunderstore.io/package/download/Lakatrazz/BONELAB_Fusion/1.7.0/" -O fusion.zip
+          unzip -o fusion.zip -d fusion_extracted/
+          find fusion_extracted/ -name "*.dll" | xargs -I{} cp {} libs/ 2>/dev/null || true
+          echo "=== libs after Fusion ===" && ls libs/
 
       - name: Build mod
         run: dotnet build HexaBack.csproj -c Release
@@ -56,5 +57,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HexaBack
-          path: "bin/Release/net6.0/HexaBack.dll"
+          path: "**/HexaBack.dll"
           if-no-files-found: error
