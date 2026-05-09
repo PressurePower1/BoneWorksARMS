@@ -20,45 +20,18 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Download MelonLoader
-        continue-on-error: true
-        run: |
-          mkdir -p libs
-          wget -q https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.x64.zip -O ml.zip
-          unzip -o ml.zip -d ml_extracted/
-          find ml_extracted/ -name "MelonLoader.dll" | head -1 | xargs -I{} cp {} libs/
-          find ml_extracted/ -name "0Harmony.dll" | head -1 | xargs -I{} cp {} libs/
-          find ml_extracted/ -name "UnityEngine.CoreModule.dll" | head -1 | xargs -I{} cp {} libs/
-          find ml_extracted/ -name "UnityEngine.PhysicsModule.dll" | head -1 | xargs -I{} cp {} libs/
-          find ml_extracted/ -name "Il2Cppmscorlib.dll" | head -1 | xargs -I{} cp {} libs/
-          find ml_extracted/ -name "Il2CppSLZ.Marrow.dll" | head -1 | xargs -I{} cp {} libs/
-          echo "=== libs after MelonLoader ===" && ls libs/
-
-      - name: Download BoneLib from Thunderstore
-        continue-on-error: true
-        run: |
-          wget -q "https://thunderstore.io/package/download/gnonme/BoneLib/3.1.4/" -O bonelib.zip
-          unzip -o bonelib.zip -d bonelib_extracted/
-          find bonelib_extracted/ -name "*.dll" | xargs -I{} cp {} libs/
-          echo "=== libs after BoneLib ===" && ls libs/
-
-      - name: Download Fusion for game stubs
-        continue-on-error: true
-        run: |
-          wget -q "https://thunderstore.io/package/download/Lakatrazz/BONELAB_Fusion/1.7.0/" -O fusion.zip
-          unzip -o fusion.zip -d fusion_extracted/
-          find fusion_extracted/ -name "*.dll" | xargs -I{} cp {} libs/ 2>/dev/null || true
-          echo "=== libs after Fusion ===" && ls libs/
+      - name: List libs
+        run: ls libs/
 
       - name: Build mod
-        run: dotnet build HexaBack.csproj -c Release --verbosity normal
+        run: dotnet build HexaBack.csproj -c Release
 
-      - name: Find built DLL
-        run: find . -name "HexaBack.dll" 2>/dev/null || echo "DLL not found anywhere"
+      - name: Find DLL
+        run: find . -name "*.dll" -path "*/Release/*"
 
       - name: Upload DLL artifact
         uses: actions/upload-artifact@v4
         with:
           name: HexaBack
-          path: "**/HexaBackRemade.dll"
+          path: "**/bin/Release/**/*.dll"
           if-no-files-found: error
