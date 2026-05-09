@@ -11,9 +11,6 @@ namespace HexaBack
 {
     public class Core : MelonMod
     {
-        private const float JumpVelocityDivider = 1.5f;
-        private const float GripMultiplier = 0.1f;
-
         private static bool _modEnabled = true;
 
         public override void OnInitializeMelon()
@@ -21,32 +18,30 @@ namespace HexaBack
             try
             {
                 LoggerInstance.Msg("Initialized HexaBack.");
-                Hooking.OnLevelLoaded += OnLevelLoaded;
-                CreateBoneMenu();
+                SetupMenu();
             }
             catch (System.Exception e)
             {
-                LoggerInstance.Error("HexaBack failed to init: " + e.Message);
+                LoggerInstance.Error("HexaBack init error: " + e.Message);
+                LoggerInstance.Error(e.StackTrace);
             }
         }
 
-        private void CreateBoneMenu()
+        private void SetupMenu()
         {
             var category = Menu.CreateCategory("HexaBack", Color.green);
             category.CreateBoolElement("Enabled", Color.white, _modEnabled, (val) =>
             {
                 _modEnabled = val;
-                if (_modEnabled)
-                    ApplyRig();
-                else
-                    RevertRig();
+                MelonLogger.Msg("[HexaBack] " + (val ? "Enabled" : "Disabled"));
             });
         }
 
-        private static void OnLevelLoaded(LevelInfo levelInfo)
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
-            if (_modEnabled)
-                ApplyRig();
+            if (!_modEnabled) return;
+            MelonLogger.Msg("[HexaBack] Scene loaded: " + sceneName);
+            ApplyRig();
         }
 
         private static void ApplyRig()
@@ -54,87 +49,44 @@ namespace HexaBack
             try
             {
                 var rm = Player.RigManager;
-                if (rm == null) return;
-
-                var physRig = rm.physicsRig;
-                if (physRig == null) return;
-
-                // Disable arm colliders (make triggers) — Boneworks style
-                SetHandTrigger(physRig.leftHand, true);
-                SetHandTrigger(physRig.rightHand, true);
-                SetTransformTrigger(physRig.m_shoulderLf, true);
-                SetTransformTrigger(physRig.m_shoulderRt, true);
-
-                // Adjust jump velocity
-                if (physRig.remapHeptaRig != null)
+                if (rm == null)
                 {
-                    physRig.remapHeptaRig.jumpVelocity =
-                        physRig.remapHeptaRig.jumpVelocity / JumpVelocityDivider;
+                    MelonLogger.Msg("[HexaBack] RigManager is null, skipping.");
+                    return;
                 }
 
-                // Adjust grip on hands (safe null checks)
-                AdjustHandGrip(physRig.leftHand);
-                AdjustHandGrip(physRig.rightHand);
+                var physRig = rm.physicsRig;
+                if (physRig == null)
+                {
+                    MelonLogger.Msg("[HexaBack] physicsRig is null, skipping.");
+                    return;
+                }
 
-                MelonLogger.Msg("[HexaBack] Rig applied.");
+                SetHandTrigger(physRig.leftHand, true);
+                SetHandTrigger(physRig.rightHand, true);
+
+                MelonLogger.Msg("[HexaBack] Rig applied successfully!");
             }
             catch (System.Exception e)
             {
                 MelonLogger.Error("[HexaBack] ApplyRig error: " + e.Message);
-            }
-        }
-
-        private static void RevertRig()
-        {
-            try
-            {
-                var rm = Player.RigManager;
-                if (rm == null) return;
-
-                var physRig = rm.physicsRig;
-                if (physRig == null) return;
-
-                SetHandTrigger(physRig.leftHand, false);
-                SetHandTrigger(physRig.rightHand, false);
-                SetTransformTrigger(physRig.m_shoulderLf, false);
-                SetTransformTrigger(physRig.m_shoulderRt, false);
-
-                MelonLogger.Msg("[HexaBack] Rig reverted.");
-            }
-            catch (System.Exception e)
-            {
-                MelonLogger.Error("[HexaBack] RevertRig error: " + e.Message);
+                MelonLogger.Error(e.StackTrace);
             }
         }
 
         private static void SetHandTrigger(PhysHand hand, bool isTrigger)
         {
             if (hand == null) return;
-            foreach (var col in hand.GetComponents<Collider>())
-                if (col != null) col.isTrigger = isTrigger;
-            for (int i = 0; i < hand.transform.childCount; i++)
-            {
-                var child = hand.transform.GetChild(i);
-                foreach (var col in child.GetComponents<Collider>())
-                    if (col != null) col.isTrigger = isTrigger;
-            }
-        }
-
-        private static void SetTransformTrigger(Transform t, bool isTrigger)
-        {
-            if (t == null) return;
-            foreach (var col in t.GetComponents<Collider>())
-                if (col != null) col.isTrigger = isTrigger;
-        }
-
-        private static void AdjustHandGrip(PhysHand hand)
-        {
-            if (hand == null) return;
             try
             {
-                hand.gripMult = GripMultiplier;
+                var colliders = hand.GetComponents<Collider>();
+                foreach (var col in colliders)
+                    if (col != null) col.isTrigger = isTrigger;
             }
-            catch { /* gripMult may not exist on all rigs, safe to skip */ }
+            catch (System.Exception e)
+            {
+                MelonLogger.Error("[HexaBack] SetHandTrigger error: " + e.Message);
+            }
         }
     }
 }
